@@ -11,5 +11,4 @@ app = FastAPI()
 async def home():
     return {"msg":"hello"}
 
-# app.include_router(router=router.router,tags=["book"],prefix="/book")
 app.include_router(router=router.router,tags=["data"],prefix="/data")
