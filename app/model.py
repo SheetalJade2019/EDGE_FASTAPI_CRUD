@@ -1,11 +1,11 @@
 from sqlalchemy import Column, Integer, String, DateTime
 from config import Base 
 
-class Book(Base):
-    __tablename__="book"
-    id=Column(Integer,primary_key=True)
-    title=Column(String)
-    description=Column(String)
+# class Book(Base):
+#     __tablename__="book"
+#     id=Column(Integer,primary_key=True)
+#     title=Column(String)
+#     description=Column(String)
 
 class Source(Base):
     __tablename__="source"
