@@ -1,6 +1,8 @@
 from typing import List,Generic, Optional,TypeVar
 from pydantic import BaseModel, Field
 from pydantic.generics import GenericModel
+from datetime import datetime
+
 
 T = TypeVar('T')
 
@@ -30,9 +32,9 @@ class SourceSchema(BaseModel):
     source:Optional[str]=None
     source_type:Optional[str]=None
     source_tag:Optional[str]=None
-    last_update_date:Optional[str]=None
-    from_date:Optional[str]=None
-    to_date:Optional[str]=None
+    last_update_date:Optional[datetime]=None
+    from_date:Optional[datetime]=None
+    to_date:Optional[datetime]=None
     frequency:Optional[str]=None
     
 
