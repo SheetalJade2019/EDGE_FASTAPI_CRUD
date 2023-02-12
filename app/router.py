@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Path, Depends
 from config import SessionLocal
 from sqlalchemy.orm import Session
-from schemas import BookSchema,RequestBook,Response
+from schemas import BookSchema,RequestBook,Response, SourceSchema,RequestSource
 import crud
 
 router = APIRouter()
@@ -12,6 +12,29 @@ def get_db():
         yield db
     finally:
         db.close()
+
+@router.post("/add_data")
+async def create(request:RequestSource,db:Session=Depends(get_db)):
+    crud.create_source(db,s=request.parameter)
+    return Response(code=200,status="OK",message="Source Created").dict(exclude_none=True)
+
+@router.get("/get_data")
+async def get(db:Session=Depends(get_db)):
+    _source = crud.get_source(db,0,100)
+    return Response(code=200,status="OK",message="Source Fetched",result=_source).dict(exclude_none=True)
+
+@router.get("/get_data/{source_id}")
+async def get_sourcedata_by_id(source_id:int,db:Session=Depends(get_db)):
+    _source = crud.get_source_by_id(db,source_id)
+    # return Response(code=200,status="OK",message="Data Fetched",result=_book).dict(exclude=None)
+    return Response(code=200,status="OK",message="Source Fetched",result=_source).dict(exclude_none=True)
+
+@router.post("/update_data")
+async def update_source(request:RequestSource,db:Session=Depends(get_db)):
+    _source = crud.update_source(db=db,source_id=request.parameter.source_id,source=request.parameter.source,source_type=request.parameter.source_type,source_tag=request.parameter.source_tag, frequency=request.parameter.frequency, to_date=request.parameter.to_date, last_update_date=request.parameter.last_update_date, from_date = request.parameter.from_date)
+    return Response(code=200,status="OK",message="Source Updated",result=_source).dict(exclude_none=True)
+
+
 
 @router.post("/create")
 async def create(request:RequestBook,db:Session=Depends(get_db)):
